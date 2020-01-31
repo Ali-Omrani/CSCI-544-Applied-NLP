@@ -62,7 +62,10 @@ for line in train_data:
         lemma = field[2]
 
         ######################################################
-        ### Insert code for populating the lemma counts    ###
+        if lemma in lemma_count.keys():
+            lemma_count[lemma] += 1
+        else:
+            lemma_count[lemma] = 1
         ######################################################
 
 ### Model building and training statistics

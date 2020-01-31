@@ -96,7 +96,7 @@ for line in train_data:
         ######################################################
 
 ### Model building and training statistics
-        
+max_lemma_count = 1
 for form in lemma_count.keys():
 
         ######################################################
@@ -129,14 +129,22 @@ for form in lemma_count.keys():
             training_counts["Unambiguous tokens"] += sum(lemma_count[form].values())
 
         if form in lemma_count[form]:
-            training_counts["Identity tokens"] += 1
+            training_counts["Identity tokens"] += lemma_count[form][form]
+
+        if len(lemma_count[form]) > max_lemma_count:
+            max_lemma_count = len(lemma_count[form])
         ######################################################
 ### Calculate expected accuracy if we used lookup on all items ###
+# Expected Lookup Accuracy = Ratio of the maximum count of the lemma tokens to the total wordform tokens
 
-accuracies['Expected lookup'] =
+# Expected Identity Accuracy = Ratio of Identity tokens to the total word form tokens
+
+# Overall Accuracy = Ratio of total items found in the lookup table to the total test items
+
+accuracies['Expected lookup'] = max_lemma_count/training_counts["Wordform tokens"]
 
 
-accuracies['Expected identity'] = ### Calculate expected accuracy if we used identity mapping on all items ###
+accuracies['Expected identity'] = training_counts["Identitiy tokens"]/training_counts["Wordform tokens"]
 
 ### Testing: read test data, and compare lemmatizer output to actual lemma
     
@@ -156,13 +164,30 @@ for line in test_data:
 
         ######################################################
         ### Insert code for populating the test counts     ###
+
+        # test_outcomes = ['Total test items', 'Found in lookup table', 'Lookup match', 'Lookup mismatch',
+        #              'Not found in lookup table', 'Identity match', 'Identity mismatch']
+        test_outcomes["Total test items"] += 1
+        if form in lemma_max:
+            test_outcomes["Found in lookup table"] += 1
+            if lemma_max[form] == lemma:
+                test_outcomes["Lookup match"] += 1
+            else:
+                test_outcomes["Lookup mismatch"] += 1
+        else:
+            test_outcomes["Not found in lookup table"] += 1
+            if lemma == form:
+                test_outcomes["Identity match"] += 1
+            else:
+                test_outcomes["Identity mismatch"] += 1
+
         ######################################################
+### Calculate accuracy on the items that used the lookup table ###
+accuracies['Lookup'] = test_outcomes["Lookup match"]/test_outcomes["Found in lookup table"]
 
-accuracies['Lookup'] = ### Calculate accuracy on the items that used the lookup table ###
-
-accuracies['Identity'] = ### Calculate accuracy on the items that used identity mapping ###
-
-accuracies['Overall'] = ### Calculate overall accuracy ###
+accuracies['Identity'] = test_outcomes["Identity match"]/(test_outcomes["Not found in lookup table"])
+### Calculate overall accuracy ###
+accuracies['Overall'] = (test_outcomes["Lookup match"]+test_outcomes["Identity match"])/test_outcomes["Total test items"]
 
 ### Report training statistics and test results
                 

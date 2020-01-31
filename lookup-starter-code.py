@@ -42,6 +42,7 @@ Identify match refers to word forms having lemma as the word form itself. If it 
 
 import sys
 import re
+import operator
 
 ### Global variables
 
@@ -68,6 +69,7 @@ accuracies = {}
 
 train_data = open (train_file , 'r')
 
+train_form_token_count = 0
 for line in train_data:
     
     # Tab character identifies lines containing tokens
@@ -79,6 +81,7 @@ for line in train_data:
         # Word form in second field, lemma in third field
         form = field[1]
         lemma = field[2]
+        train_form_token_count += 1
 
         ######################################################
 
@@ -98,13 +101,40 @@ for form in lemma_count.keys():
 
         ######################################################
         ### Insert code for building the lookup table      ###
+        form_lemma_counts = lemma_count[form]
+        max_count = 0
+        best_lemma = form
+        for lemma in form_lemma_counts:
+            if form_lemma_counts[lemma] > max_count:
+                max_count = form_lemma_counts[lemma]
+                best_lemma = lemma
+
+        lemma_max[form] = lemma
         ######################################################
+
+        # training_stats = ['Wordform types', 'Wordform tokens', 'Unambiguous types', 'Unambiguous tokens',
+        #                'Ambiguous types', 'Ambiguous tokens', 'Ambiguous most common tokens', 'Identity tokens']
 
         ######################################################
         ### Insert code for populating the training counts ###
-        ######################################################
+        training_counts["Wordform types"] = len(lemma_count)
+        training_counts["Wordform tokens"] += sum(lemma_count[form].values())
 
-accuracies['Expected lookup'] = ### Calculate expected accuracy if we used lookup on all items ###
+        if len(lemma_count[form]) > 1:
+            training_counts["Ambiguous types"] += 1
+            training_counts["Ambiguous tokens"] += sum(lemma_count[form].values())
+            training_counts["Ambiguous most common tokens"] += max(lemma_count[form].values())
+        else:
+            training_counts["Unambiguous types"] +=1
+            training_counts["Unambiguous tokens"] += sum(lemma_count[form].values())
+
+        if form in lemma_count[form]:
+            training_counts["Identity tokens"] += 1
+        ######################################################
+### Calculate expected accuracy if we used lookup on all items ###
+
+accuracies['Expected lookup'] =
+
 
 accuracies['Expected identity'] = ### Calculate expected accuracy if we used identity mapping on all items ###
 

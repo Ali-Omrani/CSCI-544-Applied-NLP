@@ -21,6 +21,25 @@
 ### in the third field. Tab characters are assumed to occur only in
 ### lines corresponding to tokens; other lines are ignored.
 
+"""
+
+Unambiguous tokens :  Word forms which invariably maps to one lemma
+
+Ambiguous tokens : Word forms which maps to more than one lemma
+
+Identity tokens : Lemma == Word form
+
+Expected Lookup Accuracy = Ratio of the maximum count of the lemma tokens to the total wordform tokens
+
+Expected Identity Accuracy = Ratio of Identity tokens to the total word form tokens
+
+Overall Accuracy = Ratio of total items found in the lookup table to the total test items
+
+Identify match refers to word forms having lemma as the word form itself. If it does not match, then it is Identity mismatch. You need to check these conditions if the word form is not found in lookup table.
+
+
+"""
+
 import sys
 import re
 
@@ -62,10 +81,15 @@ for line in train_data:
         lemma = field[2]
 
         ######################################################
-        if lemma in lemma_count.keys():
-            lemma_count[lemma] += 1
+
+        if form in lemma_count:
+            if lemma in lemma_count[form]:
+                lemma_count[form][lemma] += 1
+            else
+                lemma_count[form][lemma] = 1
         else:
-            lemma_count[lemma] = 1
+            lemma_count[form] = {lemma:1}
+
         ######################################################
 
 ### Model building and training statistics

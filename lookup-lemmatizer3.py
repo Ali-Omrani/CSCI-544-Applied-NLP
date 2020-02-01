@@ -98,7 +98,7 @@ for line in train_data:
         ######################################################
 
 ### Model building and training statistics
-max_lemma_count = 1
+max_lemma_token_count = 0
 for form in lemma_count.keys():
 
     ######################################################
@@ -109,9 +109,9 @@ for form in lemma_count.keys():
     for lemma in form_lemma_counts:
         if form_lemma_counts[lemma] > max_count:
             max_count = form_lemma_counts[lemma]
-            best_lemma = best_lemma
+            best_lemma = lemma
 
-    lemma_max[form] = lemma
+    lemma_max[form] = best_lemma
     ######################################################
 
     # training_stats = ['Wordform types', 'Wordform tokens', 'Unambiguous types', 'Unambiguous tokens',
@@ -133,8 +133,7 @@ for form in lemma_count.keys():
     if form in lemma_count[form]:
         training_counts["Identity tokens"] += lemma_count[form][form]
 
-    if len(lemma_count[form]) > max_lemma_count:
-        max_lemma_count = len(lemma_count[form])
+    max_lemma_token_count += max(lemma_count[form].values())
     ######################################################
 ### Calculate expected accuracy if we used lookup on all items ###
 # Expected Lookup Accuracy = Ratio of the maximum count of the lemma tokens to the total wordform tokens
@@ -143,7 +142,7 @@ for form in lemma_count.keys():
 
 # Overall Accuracy = Ratio of total items found in the lookup table to the total test items
 
-accuracies['Expected lookup'] = max_lemma_count / training_counts["Wordform tokens"]
+accuracies['Expected lookup'] = max_lemma_token_count / training_counts["Wordform tokens"]
 
 accuracies['Expected identity'] = training_counts["Identity tokens"] / training_counts["Wordform tokens"]
 

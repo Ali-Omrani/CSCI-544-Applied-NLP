@@ -109,7 +109,7 @@ for form in lemma_count.keys():
     for lemma in form_lemma_counts:
         if form_lemma_counts[lemma] > max_count:
             max_count = form_lemma_counts[lemma]
-            best_lemma = lemma
+            best_lemma = best_lemma
 
     lemma_max[form] = lemma
     ######################################################

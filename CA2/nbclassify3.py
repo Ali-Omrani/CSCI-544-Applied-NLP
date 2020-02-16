@@ -62,15 +62,15 @@ for text in texts:
     text = text.replace("\n", "").replace("(", "").replace(")", "").replace(".", "").replace(";", "").replace(",", "")
     tokens.extend(text.split(" "))
 
+def get_bag_of_words(tokens):
+    bag_of_words = {}
+    for token in tokens:
+        if token in bag_of_words:
+            bag_of_words[token] += 1
+        else:
+            bag_of_words[token] = 1
 
-token_count_dict = {}
-for token in tokens:
-    if token in token_count_dict:
-        token_count_dict[token] += 1
-    else:
-        token_count_dict[token] = 1
-
-print(token_count_dict)
+    return bag_of_words
 
 # print([text.split(" ").replace("\n", "").replace("(", "").replace(")", "").replace(".", "").replace(";", "") for text in texts])
 

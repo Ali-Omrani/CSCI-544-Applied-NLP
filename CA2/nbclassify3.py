@@ -19,7 +19,9 @@ truthful_dirs = [os.path.join(positive_dir[0], "truthful_from_TripAdvisor"), os.
 deceptive_dirs = [os.path.join(positive_dir[0], "deceptive_from_MTurk"), os.path.join(negative_dir[0], "deceptive_from_MTurk")]
 
 print(positive_dir)
-def get_file_paths(dir_paths):
+
+
+def get_text_file_paths(dir_paths):
     text_files = []
     for dir_path in dir_paths:
         print("exploring", dir_path)
@@ -34,10 +36,10 @@ def get_file_paths(dir_paths):
 category = "positive"
 file_paths_dict = {}
 
-file_paths_dict["positive"] = get_file_paths(positive_dir)
-file_paths_dict["negative"] = get_file_paths(negative_dir)
-file_paths_dict["truthful"] = get_file_paths(truthful_dirs)
-file_paths_dict["deceptive"] = get_file_paths(deceptive_dirs)
+file_paths_dict["positive"] = get_text_file_paths(positive_dir)
+file_paths_dict["negative"] = get_text_file_paths(negative_dir)
+file_paths_dict["truthful"] = get_text_file_paths(truthful_dirs)
+file_paths_dict["deceptive"] = get_text_file_paths(deceptive_dirs)
 
 print(len(file_paths_dict[category]))
 # print(file_paths_dict["deceptive"])

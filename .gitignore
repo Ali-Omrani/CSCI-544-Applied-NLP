@@ -9,6 +9,7 @@ __pycache__/
 # data/model/result folders
 CA1/data/
 CA2/data/
+CA2/test_data/
 .idea
 
 # Distribution / packaging

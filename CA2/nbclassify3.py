@@ -56,5 +56,22 @@ def get_texts(file_paths):
 texts = get_texts(file_paths_dict[category])
 
 
-print(len(texts))
+
+tokens = []
+for text in texts:
+    text = text.replace("\n", "").replace("(", "").replace(")", "").replace(".", "").replace(";", "").replace(",", "")
+    tokens.extend(text.split(" "))
+
+
+token_count_dict = {}
+for token in tokens:
+    if token in token_count_dict:
+        token_count_dict[token] += 1
+    else:
+        token_count_dict[token] = 1
+
+print(token_count_dict)
+
+# print([text.split(" ").replace("\n", "").replace("(", "").replace(")", "").replace(".", "").replace(";", "") for text in texts])
+
 

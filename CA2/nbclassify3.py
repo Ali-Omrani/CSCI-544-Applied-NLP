@@ -12,18 +12,31 @@ data_path = "data"
 #         h1.append(temp_path)
 #         print(h1)
 
-positive_dir = os.path.join(data_path, "positive_polarity")
-negative_dir = os.path.join(data_path, "negative_polarity")
+positive_dir = [os.path.join(data_path, "positive_polarity")]
+negative_dir = [os.path.join(data_path, "negative_polarity")]
 
-truthful_dirs = [os.path.join(positive_dir, "truthful_from_TripAdvisor"), os.path.join(negative_dir, "truthful_from_TripAdvisor")]
-deceptive_dirs = [os.path.join(positive_dir, "deceptive_from_MTurk"), os.path.join(negative_dir, "deceptive_from_MTurk")]
-print(positive_dir)
-print(negative_dir)
-print(truthful_dirs)
-print(deceptive_dirs)
+truthful_dirs = [os.path.join(positive_dir[0], "truthful_from_TripAdvisor"), os.path.join(negative_dir[0], "truthful_from_TripAdvisor")]
+deceptive_dirs = [os.path.join(positive_dir[0], "deceptive_from_MTurk"), os.path.join(negative_dir[0], "deceptive_from_MTurk")]
 
 
+def get_file_paths(dir_paths):
+    files = []
+    for dir_path in dir_paths:
+        # r=root, d=directories, f = files
+        for r, d, f in os.walk(dir_path):
+            for file in f:
+                if '.txt' in file:
+                    files.append(os.path.join(r, file))
+    return files
 
+file_paths_dict = {}
+
+file_paths_dict["positive"] = get_file_paths(positive_dir)
+file_paths_dict["negative"] = get_file_paths(negative_dir)
+file_paths_dict["truthful"] = get_file_paths(truthful_dirs)
+file_paths_dict["deceptive"] = get_file_paths(deceptive_dirs)
+
+print(file_paths_dict["deceptive"])
 
 # print(type(h1))
 # h1 = [item for item in h1 if os.path.isdir(item)]

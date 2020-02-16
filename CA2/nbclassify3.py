@@ -2,7 +2,7 @@ import os
 from os import walk
 
 data_path = "data"
-
+test_fold_name = "fold1"
 # print(os.listdir(data_path))
 # h1 = []
 # for path in os.listdir(data_path):
@@ -72,6 +72,18 @@ def get_bag_of_words(tokens):
 
     return bag_of_words
 
-# print([text.split(" ").replace("\n", "").replace("(", "").replace(")", "").replace(".", "").replace(";", "") for text in texts])
 
+bag_of_words = get_bag_of_words(tokens)
+
+print(bag_of_words)
+
+def get_probs(bag_of_words):
+    probs = {}
+    total = sum(bag_of_words.values())
+    for key in bag_of_words:
+        probs[key] = bag_of_words[key]/total
+    return probs
+
+probs = get_probs(bag_of_words)
+print(probs)
 

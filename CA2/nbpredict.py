@@ -37,16 +37,40 @@ def get_class_prob(file_path, class_probs):
 
 # probs = {"ali": 0.2, "mamad": 0.3}
 
+probs_paths = {"positive":"positive.pkl", "negative":"negative.pkl", "truthful": "truthful.pkl", "deceptive": "deceptive.pkl"}
+probs = {}
+for key in probs_paths:
+    probs[key] = read_probs(probs_paths[key])
+
+
+
+
 pred_dir_path = ["data/positive_polarity"]
-
-
 text_file_paths = get_text_file_paths(pred_dir_path)
+for file_path in text_file_paths:
+    pred_file_path = text_file_paths[2]
+    print(pred_file_path)
 
-probs_path = "test_dump.pkl"
+    pos_prob = get_class_prob(pred_file_path, probs["positive"])
+    neg_prob = get_class_prob(pred_file_path, probs["negative"])
+    truthful_prob = get_class_prob(pred_file_path, probs["truthful"])
+    deceptive_prob = get_class_prob(pred_file_path, probs["deceptive"])
 
-probs = read_probs(probs_path)
+    label1 = ""
+    label2 = ""
 
-pred_file_path = text_file_paths[2]
-print(pred_file_path)
-predict_pos_neg(pred_file_path, probs, probs)
-# for text_file_path in text_file_paths:
+    print("p", pos_prob, "n", neg_prob, "t", truthful_prob, "d", deceptive_prob)
+
+
+    if pos_prob > neg_prob:
+        label1 = "positive"
+    else:
+        label1 = "negative"
+
+    if truthful_prob > deceptive_prob:
+        label2 = "truthful"
+    else:
+        label2 = "deceptive"
+
+    print(label1, label2, pred_file_path)
+

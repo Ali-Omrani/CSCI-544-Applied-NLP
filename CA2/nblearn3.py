@@ -1,9 +1,11 @@
 # this is token based classification
 import os
-from os import walk
-import csv
 import pickle
 import sys
+import string
+import re
+
+
 
 data_path = sys.argv[1]
 
@@ -53,9 +55,12 @@ def get_texts(file_paths):
 def get_tokens(texts):
     tokens = []
     for text in texts:
-        text = text.replace("\n", "").replace("(", "").replace(")", "").replace(".", "").replace(";", "").replace(",",
-                                                                                                                  "")
-        tokens.extend(text.split(" "))
+        translator = str.maketrans("", "", string.punctuation)
+        text = text.translate(translator).lower()
+        tokens.extend(re.split("\W+", text))
+
+        # text = text.replace("\n", "").replace("(", "").replace(")", "").replace(".", "").replace(";", "").replace(",",                                                                                          "")
+        # tokens.extend(text.split(" "))
     return tokens
 
 def get_bag_of_words(tokens):

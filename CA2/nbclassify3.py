@@ -3,6 +3,8 @@ import pickle
 import math
 import csv
 import sys
+import string
+import re
 
 def read_probs(path_to_pickle):
     with open(path_to_pickle, 'rb') as f:
@@ -23,8 +25,9 @@ def get_text_file_paths(dir_paths):
 def get_class_prob(file_path, class_probs):
     file = open(file_path, mode='r')
     text = file.read()
-    text = text.replace("\n", "").replace("(", "").replace(")", "").replace(".", "").replace(";", "").replace(",", "")
-    tokens = text.split(" ")
+    translator = str.maketrans("", "", string.punctuation)
+    text = text.translate(translator).lower()
+    tokens = re.split("\W+", text)
     UK = 0
     prob = 0
 

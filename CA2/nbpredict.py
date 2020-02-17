@@ -56,7 +56,7 @@ for pred_file_path in text_file_paths:
     label1 = ""
     label2 = ""
 
-    print("p", pos_prob, "n", neg_prob, "t", truthful_prob, "d", deceptive_prob)
+    # print("p", positive_prob, "n", neg_prob, "t", truthful_prob, "d", deceptive_prob)
 
 
     if pos_prob > neg_prob:

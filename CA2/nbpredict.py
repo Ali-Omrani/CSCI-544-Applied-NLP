@@ -1,6 +1,10 @@
 import os
 import pickle
+import csv
 
+def read_probs(path_to_pickle):
+    with open(path_to_pickle, 'rb') as f:
+        return pickle.load(f)
 
 def get_text_file_paths(dir_paths):
     text_files = []
@@ -28,11 +32,16 @@ def predict_pos_neg(file_path, pos_probs, neg_probs):
 
 
 
-probs = {"ali": 0.2, "mamad": 0.3}
+# probs = {"ali": 0.2, "mamad": 0.3}
 
 predict_path = "test_data"
 
 
-text_file_paths = get_text_file_paths(predict_path)
+# text_file_paths = get_text_file_paths(predict_path)
+
+probs_path = "test_dump.pkl"
+
+probs = read_probs(probs_path)
+print(probs)
 
 # for text_file_path in text_file_paths:

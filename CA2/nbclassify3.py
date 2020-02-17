@@ -1,8 +1,11 @@
 import os
 from os import walk
+import csv
+import pickle
 
 data_path = "data"
 test_fold_name = "fold1"
+result_path = "test_dump"
 # print(os.listdir(data_path))
 # h1 = []
 # for path in os.listdir(data_path):
@@ -86,6 +89,18 @@ def get_probs(bag_of_words):
         probs[key] = bag_of_words[key]/total
     return probs
 
-probs = get_probs(bag_of_words)
-print(probs)
+pos_probs = get_probs(bag_of_words)
+print(pos_probs)
 
+def save_to_csv(probs):
+    with open(result_path+".csv", 'w') as csvfile:
+        writer = csv.DictWriter(csvfile, fieldnames=probs.keys())
+        writer.writeheader()
+        for data in [probs]:
+            writer.writerow(data)
+
+def save_to_pickle(obj, filename):
+    with open(filename+'.pkl', 'wb') as f:
+        pickle.dump(obj, f, pickle.HIGHEST_PROTOCOL)
+
+save_to_pickle(pos_probs, result_path)

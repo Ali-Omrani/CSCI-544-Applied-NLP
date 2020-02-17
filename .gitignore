@@ -11,7 +11,7 @@ CA1/data/
 CA2/data/
 CA2/test_data/
 .idea
-
+test_dump.pkl
 # Distribution / packaging
 .Python
 build/

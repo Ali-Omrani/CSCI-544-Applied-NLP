@@ -19,28 +19,21 @@ def get_text_file_paths(dir_paths):
     return text_files
 
 
-def predict_pos_neg(file_path, pos_probs, neg_probs):
+def get_class_prob(file_path, class_probs):
     file = open(file_path, mode='r')
     text = file.read()
     text = text.replace("\n", "").replace("(", "").replace(")", "").replace(".", "").replace(";", "").replace(",", "")
     tokens = text.split(" ")
-    pos_UK = 0
-    pos_prob = 0
-    neg_UK = 0
-    neg_prob = 0
+    UK = 0
+    prob = 0
 
     for token in tokens:
-        if token in pos_probs:
-            pos_prob += math.log(pos_probs[token])
+        if token in class_probs:
+            prob += math.log(class_probs[token])
         else:
-            pos_UK += 1
+            UK += 1
 
-        if token in neg_probs:
-            neg_prob += math.log(neg_probs[token])
-        else:
-            neg_UK += 1
-
-    print("positive_probability", math.exp(pos_prob), "negative_probability", math.exp(neg_prob))
+    return prob
 
 # probs = {"ali": 0.2, "mamad": 0.3}
 

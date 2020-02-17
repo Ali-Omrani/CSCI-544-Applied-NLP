@@ -58,14 +58,15 @@ def get_texts(file_paths):
         texts.append(all_of_it)
     return texts
 
-texts = get_texts(file_paths_dict[category])
 
 
-
-tokens = []
-for text in texts:
-    text = text.replace("\n", "").replace("(", "").replace(")", "").replace(".", "").replace(";", "").replace(",", "")
-    tokens.extend(text.split(" "))
+def get_tokens(texts):
+    tokens = []
+    for text in texts:
+        text = text.replace("\n", "").replace("(", "").replace(")", "").replace(".", "").replace(";", "").replace(",",
+                                                                                                                  "")
+        tokens.extend(text.split(" "))
+    return tokens
 
 def get_bag_of_words(tokens):
     bag_of_words = {}
@@ -77,20 +78,12 @@ def get_bag_of_words(tokens):
 
     return bag_of_words
 
-
-bag_of_words = get_bag_of_words(tokens)
-
-print(bag_of_words)
-
 def get_probs(bag_of_words):
     probs = {}
     total = sum(bag_of_words.values())
     for key in bag_of_words:
         probs[key] = bag_of_words[key]/total
     return probs
-
-pos_probs = get_probs(bag_of_words)
-print(pos_probs)
 
 def save_to_csv(probs):
     with open(result_path+".csv", 'w') as csvfile:
@@ -103,4 +96,9 @@ def save_to_pickle(obj, filename):
     with open(filename+'.pkl', 'wb') as f:
         pickle.dump(obj, f, pickle.HIGHEST_PROTOCOL)
 
+
+texts = get_texts(file_paths_dict[category])
+tokens = get_texts(texts)
+bag_of_words = get_bag_of_words(tokens)
+pos_probs = get_probs(bag_of_words)
 save_to_pickle(pos_probs, result_path)

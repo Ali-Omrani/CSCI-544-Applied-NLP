@@ -2,6 +2,7 @@ import os
 import pickle
 import math
 import csv
+import sys
 
 def read_probs(path_to_pickle):
     with open(path_to_pickle, 'rb') as f:
@@ -44,8 +45,8 @@ for key in probs_paths:
 
 
 
-
-pred_dir_path = ["data/positive_polarity"]
+pred_dir_path = [sys.argv[1]]
+# pred_dir_path = ["data/positive_polarity"]
 text_file_paths = get_text_file_paths(pred_dir_path)
 for pred_file_path in text_file_paths:
     pos_prob = get_class_prob(pred_file_path, probs["positive"])

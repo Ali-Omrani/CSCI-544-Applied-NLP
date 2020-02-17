@@ -3,9 +3,11 @@ import os
 from os import walk
 import csv
 import pickle
+import sys
 
-data_path = "data"
-test_fold_name = "fold1"
+data_path = sys.argv[1]
+
+# test_fold_name = "fold1"
 
 positive_dir = [os.path.join(data_path, "positive_polarity")]
 negative_dir = [os.path.join(data_path, "negative_polarity")]

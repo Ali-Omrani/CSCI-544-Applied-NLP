@@ -59,12 +59,12 @@ for pred_file_path in text_file_paths:
     print("p", pos_prob, "n", neg_prob, "t", truthful_prob, "d", deceptive_prob)
 
 
-    if math.exp(pos_prob) > math.exp(neg_prob):
+    if pos_prob > neg_prob:
         label1 = "positive"
     else:
         label1 = "negative"
 
-    if math.exp(truthful_prob) > math.exp(deceptive_prob):
+    if truthful_prob > deceptive_prob:
         label2 = "truthful"
     else:
         label2 = "deceptive"

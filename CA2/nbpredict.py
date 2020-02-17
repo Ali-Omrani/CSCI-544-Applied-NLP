@@ -47,10 +47,7 @@ for key in probs_paths:
 
 pred_dir_path = ["data/positive_polarity"]
 text_file_paths = get_text_file_paths(pred_dir_path)
-for file_path in text_file_paths:
-    pred_file_path = text_file_paths[2]
-    print(pred_file_path)
-
+for pred_file_path in text_file_paths:
     pos_prob = get_class_prob(pred_file_path, probs["positive"])
     neg_prob = get_class_prob(pred_file_path, probs["negative"])
     truthful_prob = get_class_prob(pred_file_path, probs["truthful"])
@@ -62,12 +59,12 @@ for file_path in text_file_paths:
     print("p", pos_prob, "n", neg_prob, "t", truthful_prob, "d", deceptive_prob)
 
 
-    if pos_prob > neg_prob:
+    if math.exp(pos_prob) > math.exp(neg_prob):
         label1 = "positive"
     else:
         label1 = "negative"
 
-    if truthful_prob > deceptive_prob:
+    if math.exp(truthful_prob) > math.exp(deceptive_prob):
         label2 = "truthful"
     else:
         label2 = "deceptive"

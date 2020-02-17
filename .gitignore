@@ -12,6 +12,7 @@ CA2/data/
 CA2/test_data/
 .idea
 test_dump.pkl
+*.pkl
 # Distribution / packaging
 .Python
 build/

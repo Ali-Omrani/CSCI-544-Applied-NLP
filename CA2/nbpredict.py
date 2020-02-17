@@ -1,5 +1,6 @@
 import os
 import pickle
+import math
 import csv
 
 def read_probs(path_to_pickle):
@@ -9,8 +10,6 @@ def read_probs(path_to_pickle):
 def get_text_file_paths(dir_paths):
     text_files = []
     for dir_path in dir_paths:
-        print("exploring", dir_path)
-
         # r=root, d=directories, f = files
         for root, dirs, files in os.walk(dir_path):
             for file in files:
@@ -25,23 +24,36 @@ def predict_pos_neg(file_path, pos_probs, neg_probs):
     text = file.read()
     text = text.replace("\n", "").replace("(", "").replace(")", "").replace(".", "").replace(";", "").replace(",", "")
     tokens = text.split(" ")
+    pos_UK = 0
+    pos_prob = 0
+    neg_UK = 0
+    neg_prob = 0
 
     for token in tokens:
-        print(pos_probs[token])
+        if token in pos_probs:
+            pos_prob += math.log(pos_probs[token])
+        else:
+            pos_UK += 1
 
+        if token in neg_probs:
+            neg_prob += math.log(neg_probs[token])
+        else:
+            neg_UK += 1
 
-
+    print("positive_probability", math.exp(pos_prob), "negative_probability", math.exp(neg_prob))
 
 # probs = {"ali": 0.2, "mamad": 0.3}
 
-predict_path = "test_data"
+pred_dir_path = ["data/positive_polarity"]
 
 
-# text_file_paths = get_text_file_paths(predict_path)
+text_file_paths = get_text_file_paths(pred_dir_path)
 
 probs_path = "test_dump.pkl"
 
 probs = read_probs(probs_path)
-print(probs)
 
+pred_file_path = text_file_paths[2]
+print(pred_file_path)
+predict_pos_neg(pred_file_path, probs, probs)
 # for text_file_path in text_file_paths:

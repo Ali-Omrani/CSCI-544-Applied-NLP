@@ -9,6 +9,7 @@ STOP_WORDS = ["i","me","my","myself","we","our","ours","ourselves","you","your",
 
 
 def read_counts(path_to_pickle):
+    print("loading ", path_to_pickle)
     with open(path_to_pickle, 'rb') as f:
         return pickle.load(f)
 

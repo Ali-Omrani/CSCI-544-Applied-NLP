@@ -21,7 +21,7 @@ deceptive_dirs = [os.path.join(positive_dir[0], "deceptive_from_MTurk"), os.path
 def get_text_file_paths(dir_paths):
     text_files = []
     for dir_path in dir_paths:
-        print("exploring ", dir_path)
+        # print("exploring ", dir_path)
         # r=root, d=directories, f = files
         for root, dirs, files in os.walk(dir_path):
             for file in files:
@@ -36,8 +36,6 @@ file_paths_dict["positive"] = get_text_file_paths(positive_dir)
 file_paths_dict["negative"] = get_text_file_paths(negative_dir)
 file_paths_dict["truthful"] = get_text_file_paths(truthful_dirs)
 file_paths_dict["deceptive"] = get_text_file_paths(deceptive_dirs)
-for path in file_paths_dict["deceptive"]:
-    print(path)
 
 
 def get_texts(file_paths):

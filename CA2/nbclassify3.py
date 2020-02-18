@@ -7,7 +7,6 @@ import string
 import re
 STOP_WORDS = ["i","me","my","myself","we","our","ours","ourselves","you","your","yours","yourself","yourselves","he","him","his","himself","she","her","hers","herself","it","its","itself","they","them","their","theirs","themselves","what","which","who","whom","this","that","these","those","am","is","are","was","were","be","been","being","have","has","had","having","do","does","did","doing","a","an","the","and","but","if","or","because","as","until","while","of","at","by","for","with","about","against","between","into","through","during","before","after","above","below","to","from","up","down","in","out","on","off","over","under","again","further","then","once","here","there","when","where","why","how","all","any","both","each","few","more","most","other","some","such","no","nor","not","only","own","same","so","than","too","very","s","t","can","will","just","don","should","now"]
 
-
 def read_counts(path_to_pickle):
    #print("loading ", path_to_pickle)
     with open(path_to_pickle, 'rb') as f:
@@ -60,8 +59,8 @@ def get_class_prob(file_path, class_counts, vocab):
 vocab = []
 with open("vocab.pkl", 'rb') as f:
     vocab = pickle.load(f)
-print("vocab is:")
-print(vocab)
+# print("vocab is:")
+# print(vocab)
 
 counts_paths = {"positive":"positive.pkl", "negative":"negative.pkl", "truthful": "truthful.pkl", "deceptive": "deceptive.pkl"}
 counts = {}
@@ -75,9 +74,10 @@ pred_dir_path = [sys.argv[1]]
 text_file_paths = get_text_file_paths(pred_dir_path)
 outF = open("nboutput.txt", "w")
 for pred_file_path in text_file_paths:
+
     if "README" in pred_file_path:
         continue
-
+    # print("classifing ", pred_file_path)
     pos_prob = get_class_prob(pred_file_path, counts["positive"], vocab)
     neg_prob = get_class_prob(pred_file_path, counts["negative"], vocab)
     truthful_prob = get_class_prob(pred_file_path, counts["truthful"], vocab)
@@ -101,5 +101,5 @@ for pred_file_path in text_file_paths:
 
     ##print(label1, label2, pred_file_path)
 
-    outF.write(label1+" "+label2+" "+pred_file_path+"\n")
+    outF.write(label2+" "+label1+" "+pred_file_path+"\n")
 

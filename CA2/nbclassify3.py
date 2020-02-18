@@ -9,7 +9,7 @@ STOP_WORDS = ["i","me","my","myself","we","our","ours","ourselves","you","your",
 
 
 def read_counts(path_to_pickle):
-    print("loading ", path_to_pickle)
+   #print("loading ", path_to_pickle)
     with open(path_to_pickle, 'rb') as f:
         return pickle.load(f)
 
@@ -28,7 +28,7 @@ def get_text_file_paths(dir_paths):
 def get_class_prob(file_path, class_counts, vocab):
     file = open(file_path, mode='r')
     text = file.read()
-    print(text)
+   #print(text)
     translator = str.maketrans("", "", string.punctuation)
     text = text.translate(translator).lower()
     tokens = []
@@ -38,19 +38,19 @@ def get_class_prob(file_path, class_counts, vocab):
     UK = 0
     prob = 0
     total = sum(class_counts.values())
-    print("inside get_class_probs")
-    print(class_counts)
-    print(tokens)
+   #print("inside get_class_probs")
+   #print(class_counts)
+   #print(tokens)
     for token in tokens:
         if token not in vocab:
-            print("not in vocab")
+           #print("not in vocab")
             continue
         if token in class_counts:
-            print("found in vocab", class_counts[token])
+           #print("found in vocab", class_counts[token])
             prob += math.log((class_counts[token] + 1)/(total + len(vocab)))
-            print("prob till now", prob)
+           #print("prob till now", prob)
         else:
-            print("not found in class => prob is :", math.log(1/(total+len(vocab))))
+           #print("not found in class => prob is :", math.log(1/(total+len(vocab))))
             prob += math.log(1/(total+len(vocab)))
 
     return prob
@@ -67,14 +67,16 @@ counts_paths = {"positive":"positive.pkl", "negative":"negative.pkl", "truthful"
 counts = {}
 for key in counts_paths:
     counts[key] = read_counts(counts_paths[key])
-    print(key)
-    print(counts[key])
+   #print(key)
+   #print(counts[key])
 
 pred_dir_path = [sys.argv[1]]
 # pred_dir_path = ["data/positive_polarity"]
 text_file_paths = get_text_file_paths(pred_dir_path)
 outF = open("nboutput.txt", "w")
 for pred_file_path in text_file_paths:
+    if "README" in pred_file_path:
+        continue
 
     pos_prob = get_class_prob(pred_file_path, counts["positive"], vocab)
     neg_prob = get_class_prob(pred_file_path, counts["negative"], vocab)
@@ -84,7 +86,7 @@ for pred_file_path in text_file_paths:
     label1 = ""
     label2 = ""
 
-    # print("p", positive_prob, "n", neg_prob, "t", truthful_prob, "d", deceptive_prob)
+    ##print("p", positive_prob, "n", neg_prob, "t", truthful_prob, "d", deceptive_prob)
 
 
     if pos_prob > neg_prob:
@@ -97,7 +99,7 @@ for pred_file_path in text_file_paths:
     else:
         label2 = "deceptive"
 
-    # print(label1, label2, pred_file_path)
+    ##print(label1, label2, pred_file_path)
 
     outF.write(label1+" "+label2+" "+pred_file_path+"\n")
 

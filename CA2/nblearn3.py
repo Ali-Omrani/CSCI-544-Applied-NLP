@@ -25,6 +25,8 @@ def get_text_file_paths(dir_paths):
         # r=root, d=directories, f = files
         for root, dirs, files in os.walk(dir_path):
             for file in files:
+                if "README" in file:
+                    continue
                 if file.endswith(".txt"):
                     text_files.append(os.path.join(root, file))
     return text_files

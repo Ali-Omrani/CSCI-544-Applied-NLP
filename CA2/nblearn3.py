@@ -75,11 +75,11 @@ def get_bag_of_words(tokens):
 
     return bag_of_words
 
-def get_probs(bag_of_words):
+def get_probs(bag_of_words, vocab_size):
     probs = {}
     total = sum(bag_of_words.values())
     for key in bag_of_words:
-        probs[key] = bag_of_words[key]/total
+        probs[key] = (bag_of_words[key] + 1)/(total + vocab_size)
     return probs
 
 
@@ -89,9 +89,18 @@ def save_to_pickle(obj, filename):
 
 
 categories = ["positive", "negative", "truthful", "deceptive"]
+vocab = []
+bag_of_words = {}
 for category in categories:
     texts = get_texts(file_paths_dict[category])
     tokens = get_tokens(texts)
-    bag_of_words = get_bag_of_words(tokens)
-    # pos_probs = get_probs(bag_of_words)
-    save_to_pickle(bag_of_words, category)
+    bag_of_words[category] = get_bag_of_words(tokens)
+    for word in bag_of_words:
+        if word not in vocab:
+            vocab.append(word)
+
+save_to_pickle(vocab, "vocab")
+
+for category in categories:
+    probs = get_probs(bag_of_words[category], len(vocab))
+    save_to_pickle(probs, category)

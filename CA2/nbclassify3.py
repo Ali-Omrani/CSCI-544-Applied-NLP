@@ -24,7 +24,7 @@ def get_text_file_paths(dir_paths):
     return text_files
 
 
-def get_class_prob(file_path, class_probs):
+def get_class_prob(file_path, class_probs, vocab):
     file = open(file_path, mode='r')
     text = file.read()
     translator = str.maketrans("", "", string.punctuation)
@@ -37,32 +37,35 @@ def get_class_prob(file_path, class_probs):
     prob = 0
 
     for token in tokens:
+        if token not in vocab:
+            continue
         if token in class_probs:
             prob += math.log(class_probs[token])
         else:
-            UK += 1
+            prob += math.log(1/len(vocab))
 
     return prob
 
 # probs = {"ali": 0.2, "mamad": 0.3}
 
+vocab = []
+with open("vocab.pkl", 'rb') as f:
+    vocab = pickle.load(f)
+
 probs_paths = {"positive":"positive.pkl", "negative":"negative.pkl", "truthful": "truthful.pkl", "deceptive": "deceptive.pkl"}
-counts = {}
+probs = {}
 for key in probs_paths:
-    counts[key] = read_probs(probs_paths[key])
-
-
-print(counts["positive"])
+    probs[key] = read_probs(probs_paths[key])
 
 pred_dir_path = [sys.argv[1]]
 # pred_dir_path = ["data/positive_polarity"]
 text_file_paths = get_text_file_paths(pred_dir_path)
 outF = open("nboutput.txt", "w")
 for pred_file_path in text_file_paths[1:]:
-    pos_prob = get_class_prob(pred_file_path, counts["positive"])
-    neg_prob = get_class_prob(pred_file_path, counts["negative"])
-    truthful_prob = get_class_prob(pred_file_path, counts["truthful"])
-    deceptive_prob = get_class_prob(pred_file_path, counts["deceptive"])
+    pos_prob = get_class_prob(pred_file_path, probs["positive"],vocab)
+    neg_prob = get_class_prob(pred_file_path, probs["negative"], vocab)
+    truthful_prob = get_class_prob(pred_file_path, probs["truthful"], vocab)
+    deceptive_prob = get_class_prob(pred_file_path, probs["deceptive"], vocab)
 
     label1 = ""
     label2 = ""

@@ -93,7 +93,7 @@ for category in categories:
     texts = get_texts(file_paths_dict[category])
     tokens = get_tokens(texts)
     bag_of_words[category] = get_bag_of_words(tokens)
-    for word in bag_of_words:
+    for word in bag_of_words[category]:
         if word not in vocab:
             vocab.append(word)
 

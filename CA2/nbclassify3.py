@@ -38,6 +38,8 @@ def get_class_prob(file_path, class_counts, vocab):
     UK = 0
     prob = 0
     total = sum(class_counts.values())
+    print("inside get_class_probs")
+    print(class_counts)
     print(tokens)
     for token in tokens:
         if token not in vocab:
@@ -58,13 +60,15 @@ def get_class_prob(file_path, class_counts, vocab):
 vocab = []
 with open("vocab.pkl", 'rb') as f:
     vocab = pickle.load(f)
+print("vocab is:")
+print(vocab)
 
 counts_paths = {"positive":"positive.pkl", "negative":"negative.pkl", "truthful": "truthful.pkl", "deceptive": "deceptive.pkl"}
 counts = {}
 for key in counts_paths:
     counts[key] = read_counts(counts_paths[key])
     print(key)
-    print(counts)
+    print(counts[key])
 
 pred_dir_path = [sys.argv[1]]
 # pred_dir_path = ["data/positive_polarity"]
@@ -72,7 +76,7 @@ text_file_paths = get_text_file_paths(pred_dir_path)
 outF = open("nboutput.txt", "w")
 for pred_file_path in text_file_paths:
 
-    pos_prob = get_class_prob(pred_file_path, counts["positive"],vocab)
+    pos_prob = get_class_prob(pred_file_path, counts["positive"], vocab)
     neg_prob = get_class_prob(pred_file_path, counts["negative"], vocab)
     truthful_prob = get_class_prob(pred_file_path, counts["truthful"], vocab)
     deceptive_prob = get_class_prob(pred_file_path, counts["deceptive"], vocab)

@@ -102,5 +102,5 @@ for category in categories:
 save_to_pickle(vocab, "vocab")
 
 for category in categories:
-    probs = get_probs(bag_of_words[category], len(vocab))
-    save_to_pickle(probs, category)
+    # probs = get_probs(bag_of_words[category], len(vocab))
+    save_to_pickle(bag_of_words[category], category)

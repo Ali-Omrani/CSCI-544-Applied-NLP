@@ -93,5 +93,5 @@ for category in categories:
     texts = get_texts(file_paths_dict[category])
     tokens = get_tokens(texts)
     bag_of_words = get_bag_of_words(tokens)
-    pos_probs = get_probs(bag_of_words)
-    save_to_pickle(pos_probs, category)
+    # pos_probs = get_probs(bag_of_words)
+    save_to_pickle(bag_of_words, category)

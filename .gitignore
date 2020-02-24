@@ -9,7 +9,9 @@ __pycache__/
 # data/model/result folders
 CA1/data/
 CA2/data/
+CA3/data/
 CA2/test_data/
+CA3/test_data/
 .idea
 test_dump.pkl
 *.pkl

@@ -155,8 +155,12 @@ def train(max_iter, input_x, input_y):
 
 
 # TODO: save to text
+pos_neg_weights = train(MAX_ITER, x_pos_neg, y_pos_neg)
+save_to_pickle(pos_neg_weights, "pos_neg")
+truth_deceptive_weights = train(MAX_ITER, x_truth_deceptive, y_truth_deceptive)
+save_to_pickle(truth_deceptive_weights, "truth_deceptive")
 
-save_to_pickle(weights, "pos_neg")
+
 
 # save_to_pickle(vocab, "vocab")
 #

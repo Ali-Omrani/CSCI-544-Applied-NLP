@@ -48,6 +48,8 @@ def classify(pred_file_path, model_weights, model_bias, vocab):
     x = get_bag_of_words(tokens)
     activation = 0
     for word in x:
+        if word not in vocab:
+            continue
         activation += x[word] * model_weights[word]
     activation += model_bias
 
@@ -65,7 +67,7 @@ with open("vocab.pkl", 'rb') as f:
 # print(vocab)
 
 # TODO: add other weights
-weights_paths = {"pos_neg":"pos_neg.pkl"}
+weights_paths = {"pos_neg":"pos_neg.pkl", "truth_deceptive":"truth_deceptive.pkl"}
 weights = {}
 for key in weights_paths:
     weights[key] = read_weights(weights_paths[key])
@@ -86,8 +88,8 @@ for pred_file_path in text_file_paths:
         continue
     # print("classifing ", pred_file_path)
 
-    pos_neg_result = classify(pred_file_path, model_weights=weights["pos_neg"], model_bias=weights["pos_neg"]["MODLE_BIAS"], vocab=vocab)
-    truth_deceptive_result = classify(pred_file_path, model_weights=weights["truth_deceptive"], model_bias=weights["truth_deceptive"]["MODLE_BIAS"], vocab=vocab)
+    pos_neg_result = classify(pred_file_path, model_weights=weights["pos_neg"], model_bias=weights["pos_neg"]["MODEL_BIAS"], vocab=vocab)
+    truth_deceptive_result = classify(pred_file_path, model_weights=weights["truth_deceptive"], model_bias=weights["truth_deceptive"]["MODEL_BIAS"], vocab=vocab)
 
     label1 = ""
     label2 = ""

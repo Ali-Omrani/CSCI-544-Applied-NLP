@@ -55,7 +55,6 @@ def classify(pred_file_path, model_weights, model_bias, vocab):
     print("activation before bias", activation)
     activation += model_bias
     print(pred_file_path, activation)
-    # TODO : check for sign
     if activation > 0:
         return 1
     else:
@@ -76,7 +75,6 @@ pred_dir_path = [sys.argv[2]]
 print(model_path)
 print(pred_dir_path)
 
-# TODO: add other weights
 weights_paths = {}
 if "vanillamodel.txt" in model_path:
     print("vanilla selected!")

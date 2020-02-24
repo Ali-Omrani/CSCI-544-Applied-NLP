@@ -100,7 +100,7 @@ x_truth_deceptive = []
 y_truth_deceptive = []
 
 for category in categories:
-    print(category)
+    # print(category)
     texts = get_texts(file_paths_dict[category])
     for text in texts:
         tokens = get_tokens(text)
@@ -147,7 +147,7 @@ def train(max_iter, input_x, input_y):
             activation += bias
 
             if y*activation <= 0:
-                print("updating for y = ", y)
+                # print("updating for y = ", y)
                 for word in x:
                     weights[word] += y*x[word]
                 bias += y
@@ -160,6 +160,10 @@ pos_neg_weights = train(MAX_ITER, x_pos_neg, y_pos_neg)
 save_to_pickle(pos_neg_weights, "pos_neg")
 truth_deceptive_weights = train(MAX_ITER, x_truth_deceptive, y_truth_deceptive)
 save_to_pickle(truth_deceptive_weights, "truth_deceptive")
+
+
+with open('vanillamodel.txt', 'w') as f:
+    print(pos_neg_weights, file=f)
 
 def train_avg(max_iter, input_x, input_y):
     weights = {}
@@ -197,6 +201,9 @@ pos_neg_weights = train_avg(MAX_ITER, x_pos_neg, y_pos_neg)
 save_to_pickle(pos_neg_weights, "pos_neg_avg")
 truth_deceptive_weights = train_avg(MAX_ITER, x_truth_deceptive, y_truth_deceptive)
 save_to_pickle(truth_deceptive_weights, "truth_deceptive_avg")
+
+with open('averagedmodel.txt', 'w') as f:
+    print(pos_neg_weights, file=f)
 
 
 save_to_pickle(vocab, "vocab")

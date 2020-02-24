@@ -4,6 +4,7 @@ import pickle
 import sys
 import string
 import re
+import numpy as np
 
 STOP_WORDS = ["i","me","my","myself","we","our","ours","ourselves","you","your","yours","yourself","yourselves","he","him","his","himself","she","her","hers","herself","it","its","itself","they","them","their","theirs","themselves","what","which","who","whom","this","that","these","those","am","is","are","was","were","be","been","being","have","has","had","having","do","does","did","doing","a","an","the","and","but","if","or","because","as","until","while","of","at","by","for","with","about","against","between","into","through","during","before","after","above","below","to","from","up","down","in","out","on","off","over","under","again","further","then","once","here","there","when","where","why","how","all","any","both","each","few","more","most","other","some","such","no","nor","not","only","own","same","so","than","too","very","s","t","can","will","just","don","should","now"]
 MAX_ITER = 100
@@ -136,8 +137,7 @@ def train(max_iter, input_x, input_y):
         weights[word] = 0
     bias = 0
     for iteration in range(max_iter):
-        # TODO: permute
-        indices = range(len(input_x))
+        indices = np.random.permutation(len(input_x))
         for index in indices:
             x = input_x[index]
             y = input_y[index]
@@ -171,8 +171,7 @@ def train_avg(max_iter, input_x, input_y):
     betha = 0
     c = 1
     for iteration in range(max_iter):
-        # TODO: permute
-        indices = range(len(input_x))
+        indices =  np.random.permutation(len(input_x))
         for index in indices:
             x = input_x[index]
             y = input_y[index]

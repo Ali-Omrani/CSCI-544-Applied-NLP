@@ -150,6 +150,7 @@ for iteration in range(MAX_ITER):
                 weights[word] += y*x[word]
             bias += y
 
+# TODO: save to text
 save_to_pickle(weights, "pos_neg")
 
 # save_to_pickle(vocab, "vocab")

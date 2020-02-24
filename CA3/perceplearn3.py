@@ -6,10 +6,13 @@ import string
 import re
 
 STOP_WORDS = ["i","me","my","myself","we","our","ours","ourselves","you","your","yours","yourself","yourselves","he","him","his","himself","she","her","hers","herself","it","its","itself","they","them","their","theirs","themselves","what","which","who","whom","this","that","these","those","am","is","are","was","were","be","been","being","have","has","had","having","do","does","did","doing","a","an","the","and","but","if","or","because","as","until","while","of","at","by","for","with","about","against","between","into","through","during","before","after","above","below","to","from","up","down","in","out","on","off","over","under","again","further","then","once","here","there","when","where","why","how","all","any","both","each","few","more","most","other","some","such","no","nor","not","only","own","same","so","than","too","very","s","t","can","will","just","don","should","now"]
+MAX_ITER = 10
 
 data_path = sys.argv[1]
 
 # test_fold_name = "fold1"
+
+
 
 positive_dir = [os.path.join(data_path, "positive_polarity")]
 negative_dir = [os.path.join(data_path, "negative_polarity")]
@@ -52,14 +55,13 @@ def get_texts(file_paths):
 
 
 
-def get_tokens(texts):
+def get_tokens(text):
     tokens = []
-    for text in texts:
-        translator = str.maketrans("", "", string.punctuation)
-        text = text.translate(translator).lower()
-        for item in re.split("\W+", text):
-            if item not in STOP_WORDS:
-                tokens.append(item)
+    translator = str.maketrans("", "", string.punctuation)
+    text = text.translate(translator).lower()
+    for item in re.split("\W+", text):
+        if item not in STOP_WORDS:
+            tokens.append(item)
 
         # text = text.replace("\n", "").replace("(", "").replace(")", "").replace(".", "").replace(";", "").replace(",",                                                                                          "")
         # tokens.extend(text.split(" "))
@@ -91,16 +93,46 @@ def save_to_pickle(obj, filename):
 categories = ["positive", "negative", "truthful", "deceptive"]
 vocab = []
 bag_of_words = {}
+x_pos_neg = []
+y_pos_neg = []
+x_truth_deceptive = []
+y_truth_deceptive = []
+
 for category in categories:
+    print(category)
     texts = get_texts(file_paths_dict[category])
-    tokens = get_tokens(texts)
-    bag_of_words[category] = get_bag_of_words(tokens)
-    for word in bag_of_words[category]:
-        if word not in vocab:
-            vocab.append(word)
+    for text in texts:
+        tokens = get_tokens(text)
+        bag_of_words = get_bag_of_words(tokens)
+        if category == "positive":
+            y_pos_neg.append(1)
+            x_pos_neg.append(bag_of_words)
+        elif category == "negative":
+            y_pos_neg.append(-1)
+            x_pos_neg.append(bag_of_words)
+        elif category == "truthful":
+            y_truth_deceptive.append(1)
+            x_truth_deceptive.append(bag_of_words)
+        else:
+            y_truth_deceptive.append(-1)
+            x_truth_deceptive.append(bag_of_words)
 
-save_to_pickle(vocab, "vocab")
+        for word in bag_of_words:
+            if word not in vocab:
+                vocab.append(word)
 
-for category in categories:
-    # probs = get_probs(bag_of_words[category], len(vocab))
-    save_to_pickle(bag_of_words[category], category)
+# print(x_pos_neg[:2])
+# print(y_pos_neg[:2])
+# print(x_truth_deceptive[:2])
+# print(y_truth_deceptive[:2])
+
+
+
+
+# save_to_pickle(vocab, "vocab")
+#
+#
+#
+# for category in categories:
+#     # probs = get_probs(bag_of_words[category], len(vocab))
+#     save_to_pickle(bag_of_words[category], category)

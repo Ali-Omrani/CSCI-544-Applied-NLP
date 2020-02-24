@@ -48,13 +48,15 @@ def classify(pred_file_path, model_weights, model_bias, vocab):
     x = get_bag_of_words(tokens)
     activation = 0
     for word in x:
+        # print(word)
         if word not in vocab:
             continue
         activation += x[word] * model_weights[word]
+    print("activation before bias", activation)
     activation += model_bias
-
+    print(pred_file_path, activation)
     # TODO : check for sign
-    if activation >= 0:
+    if activation > 0:
         return 1
     else:
         return -1
@@ -66,19 +68,27 @@ with open("vocab.pkl", 'rb') as f:
 # print("vocab is:")
 # print(vocab)
 
-# TODO: add other weights
-weights_paths = {"pos_neg":"pos_neg.pkl", "truth_deceptive":"truth_deceptive.pkl"}
-weights = {}
-for key in weights_paths:
-    weights[key] = read_weights(weights_paths[key])
-   #print(key)
-   #print(counts[key])
+
 
 model_path = sys.argv[1]
 pred_dir_path = [sys.argv[2]]
 
 print(model_path)
 print(pred_dir_path)
+
+# TODO: add other weights
+weights_paths = {}
+if "vanillamodel.txt" in model_path:
+    print("vanilla selected!")
+    weights_paths = {"pos_neg":"pos_neg.pkl", "truth_deceptive":"truth_deceptive.pkl"}
+else:
+    weights_paths = {"pos_neg": "pos_neg_avg.pkl", "truth_deceptive": "truth_deceptive_avg.pkl"}
+
+weights = {}
+for key in weights_paths:
+    weights[key] = read_weights(weights_paths[key])
+   #print(key)
+   #print(counts[key])
 
 text_file_paths = get_text_file_paths(pred_dir_path)
 outF = open("nboutput.txt", "w")
@@ -96,7 +106,8 @@ for pred_file_path in text_file_paths:
 
     ##print("p", positive_prob, "n", neg_prob, "t", truthful_prob, "d", deceptive_prob)
 
-
+    print("pos_neg_result" ,pos_neg_result)
+    print("truth_decep_res", truth_deceptive_result)
     if pos_neg_result == 1:
         label1 = "positive"
     else:

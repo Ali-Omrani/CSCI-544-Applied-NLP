@@ -89,7 +89,7 @@ for key in weights_paths:
    #print(counts[key])
 
 text_file_paths = get_text_file_paths(pred_dir_path)
-outF = open("nboutput.txt", "w")
+outF = open("percepoutput.txt", "w")
 for pred_file_path in text_file_paths:
 
     if "README" in pred_file_path:

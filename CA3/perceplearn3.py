@@ -160,6 +160,39 @@ save_to_pickle(pos_neg_weights, "pos_neg")
 truth_deceptive_weights = train(MAX_ITER, x_truth_deceptive, y_truth_deceptive)
 save_to_pickle(truth_deceptive_weights, "truth_deceptive")
 
+def train_avg(max_iter, input_x, input_y):
+    weights = {}
+    u = {}
+    for word in vocab:
+        weights[word] = 0
+        u[word] = 0
+    bias = 0
+    betha = 0
+    c = 1
+    for iteration in range(max_iter):
+        # TODO: permute
+        indices = range(len(input_x))
+        for index in indices:
+            x = input_x[index]
+            y = input_y[index]
+            activation = 0
+            for word in x:
+                activation += x[word] * weights[word]
+            activation += bias
+
+            if y * activation <= 0:
+                for word in x:
+                    weights[word] += y * x[word]
+                    u[word] += y * x[word] * c
+                bias += y
+                betha += y * c
+            c += 1
+    for word in weights:
+        weights[word] = weights[word]-(u[word]/c)
+    weights["MODEL_BIAS"] = bias - (betha/c)
+    return weights
+
+
 
 
 # save_to_pickle(vocab, "vocab")

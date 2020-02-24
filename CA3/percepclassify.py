@@ -65,15 +65,19 @@ with open("vocab.pkl", 'rb') as f:
 # print(vocab)
 
 # TODO: add other weights
-counts_paths = {"pos_neg":"pos_neg.pkl"}
-counts = {}
-for key in counts_paths:
-    counts[key] = read_weights(counts_paths[key])
+weights_paths = {"pos_neg":"pos_neg.pkl"}
+weights = {}
+for key in weights_paths:
+    weights[key] = read_weights(weights_paths[key])
    #print(key)
    #print(counts[key])
 
 model_path = sys.argv[1]
 pred_dir_path = [sys.argv[2]]
+
+print(model_path)
+print(pred_dir_path)
+
 text_file_paths = get_text_file_paths(pred_dir_path)
 outF = open("nboutput.txt", "w")
 for pred_file_path in text_file_paths:
@@ -82,10 +86,8 @@ for pred_file_path in text_file_paths:
         continue
     # print("classifing ", pred_file_path)
 
-    pos_prob = get_class_prob(pred_file_path, counts["positive"], vocab)
-    neg_prob = get_class_prob(pred_file_path, counts["negative"], vocab)
-    truthful_prob = get_class_prob(pred_file_path, counts["truthful"], vocab)
-    deceptive_prob = get_class_prob(pred_file_path, counts["deceptive"], vocab)
+    pos_neg_result = classify(pred_file_path, model_weights=weights["pos_neg"], model_bias=weights["pos_neg"]["MODLE_BIAS"], vocab=vocab)
+    truth_deceptive_result = classify(pred_file_path, model_weights=weights["truth_deceptive"], model_bias=weights["truth_deceptive"]["MODLE_BIAS"], vocab=vocab)
 
     label1 = ""
     label2 = ""
@@ -93,12 +95,12 @@ for pred_file_path in text_file_paths:
     ##print("p", positive_prob, "n", neg_prob, "t", truthful_prob, "d", deceptive_prob)
 
 
-    if pos_prob > neg_prob:
+    if pos_neg_result == 1:
         label1 = "positive"
     else:
         label1 = "negative"
 
-    if truthful_prob > deceptive_prob:
+    if truth_deceptive_result == 1:
         label2 = "truthful"
     else:
         label2 = "deceptive"

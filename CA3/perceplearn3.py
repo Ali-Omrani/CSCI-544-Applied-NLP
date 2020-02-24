@@ -128,29 +128,34 @@ for category in categories:
 
 # -------------------------- perceptron learning -----------------------
 
-weights = {}
-for word in vocab:
-    weights[word] = 0
-bias = 0
 
 
-for iteration in range(MAX_ITER):
-    # TODO: permute
-    indices = range(len(x_pos_neg))
-    for index in indices:
-        x = x_pos_neg[index]
-        y = y_pos_neg[index]
-        activation = 0
-        for word in x:
-            activation += x[word]*weights[word]
-        activation += bias
-
-        if y*activation <= 0:
+def train(max_iter, input_x, input_y):
+    weights = {}
+    for word in vocab:
+        weights[word] = 0
+    bias = 0
+    for iteration in range(max_iter):
+        # TODO: permute
+        indices = range(len(input_x))
+        for index in indices:
+            x = input_x[index]
+            y = input_y[index]
+            activation = 0
             for word in x:
-                weights[word] += y*x[word]
-            bias += y
+                activation += x[word]*weights[word]
+            activation += bias
+
+            if y*activation <= 0:
+                for word in x:
+                    weights[word] += y*x[word]
+                bias += y
+    weights["MODEL_BIAS"] = bias
+    return weights
+
 
 # TODO: save to text
+
 save_to_pickle(weights, "pos_neg")
 
 # save_to_pickle(vocab, "vocab")

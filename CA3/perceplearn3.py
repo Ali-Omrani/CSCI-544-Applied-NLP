@@ -126,8 +126,31 @@ for category in categories:
 # print(x_truth_deceptive[:2])
 # print(y_truth_deceptive[:2])
 
+# -------------------------- perceptron learning -----------------------
+
+weights = {}
+for word in vocab:
+    weights[word] = 0
+bias = 0
 
 
+for iteration in range(MAX_ITER):
+    # TODO: permute
+    indices = range(len(x_pos_neg))
+    for index in indices:
+        x = x_pos_neg[index]
+        y = y_pos_neg[index]
+        activation = 0
+        for word in x:
+            activation += x[word]*weights[word]
+        activation += bias
+
+        if y*activation <= 0:
+            for word in x:
+                weights[word] += y*x[word]
+            bias += y
+
+save_to_pickle(weights, "pos_neg")
 
 # save_to_pickle(vocab, "vocab")
 #

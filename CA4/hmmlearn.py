@@ -40,13 +40,13 @@ for line in Lines:
             else:
                 Pi[tag] += 1
         else:
-            if tag not in A:
-                A[tag] = {prev_tag : 1}
+            if prev_tag not in A:
+                A[prev_tag] = {tag : 1}
             else:
                 if prev_tag not in A[tag]:
-                    A[tag][prev_tag] = 1
+                    A[prev_tag][tag] = 1
                 else:
-                    A[tag][prev_tag] += 1
+                    A[prev_tag][tag] += 1
 
         if tag not in B:
             B[tag] = {word:1}
@@ -55,8 +55,18 @@ for line in Lines:
                 B[tag][word] = 1
             else:
                 B[tag][word] += 1
-
-
-
         prev_tag = tag
     print("-------------------")
+
+
+print(A)
+print(B)
+print(Pi)
+print(tag_count_dict)
+
+num_of_tags = len(tag_count_dict)
+for tag1 in A:
+    for tag2 in A[tag1]:
+        A[tag1][tag2] = (A[tag1][tag2]+1)/(tag_count_dict[tag1]+num_of_tags)
+
+print(A)

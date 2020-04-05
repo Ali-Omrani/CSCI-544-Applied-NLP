@@ -10,6 +10,7 @@ __pycache__/
 CA1/data/
 CA2/data/
 CA2/test_data/
+CA4/data/
 .idea
 test_dump.pkl
 *.pkl

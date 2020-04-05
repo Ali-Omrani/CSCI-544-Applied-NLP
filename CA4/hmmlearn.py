@@ -43,7 +43,7 @@ for line in Lines:
             if prev_tag not in A:
                 A[prev_tag] = {tag : 1}
             else:
-                if prev_tag not in A[tag]:
+                if tag not in A[prev_tag]:
                     A[prev_tag][tag] = 1
                 else:
                     A[prev_tag][tag] += 1

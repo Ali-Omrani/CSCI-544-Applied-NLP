@@ -12,6 +12,7 @@ tag_count_dict = dict()
 A = dict()
 B = dict()
 Pi = dict ()
+word_list = []
 
 file1 = open(data_path, 'r')
 Lines = file1.readlines()
@@ -28,6 +29,8 @@ for line in Lines:
         splitted_token = token.rsplit("/", 1)
         tag = splitted_token[1]
         word = splitted_token[0]
+        if word not in word_list:
+            word_list.append(word)
 
         if tag not in tag_count_dict:
             tag_count_dict[tag] = 1
@@ -69,4 +72,18 @@ for tag1 in A:
     for tag2 in A[tag1]:
         A[tag1][tag2] = (A[tag1][tag2]+1)/(tag_count_dict[tag1]+num_of_tags)
 
-print(A)
+sentence_count = sum(Pi.values())
+for tag in Pi:
+    Pi[tag] = Pi[tag]/sentence_count
+
+diff_word_count = len(word_list)
+for tag in B:
+    for word in B[tag]:
+        B[tag][word] = (B[tag][word] + 1)/(tag_count_dict[tag]+diff_word_count)
+
+
+result_dict = {"A": A, "B": B, "Pi":Pi}
+pickle_out = open("dict.pickle","wb")
+pickle.dump(result_dict, pickle_out)
+pickle_out.close()
+

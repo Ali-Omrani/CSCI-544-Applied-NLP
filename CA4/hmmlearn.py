@@ -48,6 +48,14 @@ for line in Lines:
                 else:
                     A[tag][prev_tag] += 1
 
+        if tag not in B:
+            B[tag] = {word:1}
+        else:
+            if word not in B[tag]:
+                B[tag][word] = 1
+            else:
+                B[tag][word] += 1
+
 
 
         prev_tag = tag

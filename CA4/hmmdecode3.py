@@ -18,9 +18,6 @@ with open(path_to_pickle, 'rb') as f:
     Pi = probs["Pi"]
     tag_count_dict = probs["tag_count_dict"]
     word_list = probs["word_list"]
-    print(A)
-    print(B)
-    print(Pi)
 
     file1 = open(data_path, 'r')
     Lines = file1.readlines()
@@ -31,8 +28,6 @@ with open(path_to_pickle, 'rb') as f:
         line = line.strip()
         tokens = line.split(" ")
         print(line)
-        print(tokens)
-
         diff_tag_count = len(tag_count_dict)
         c = 0
         index_tag_mapping_dict = dict()
@@ -45,7 +40,6 @@ with open(path_to_pickle, 'rb') as f:
         num_of_tags = len(tag_count_dict)
         viterbi = np.zeros((diff_tag_count, sequence_length))
         backpointers = np.zeros((diff_tag_count, sequence_length))
-        print(viterbi.shape)
 
         for i in range(diff_tag_count):
             corresponding_tag = index_tag_mapping_dict[i]
@@ -99,13 +93,9 @@ with open(path_to_pickle, 'rb') as f:
         final_tag_list.append(index_tag_mapping_dict[best_final_state])
         prev_best_tag = best_final_state
         for i in range (sequence_length-2, -1, -1):
-            print("this is i" , i)
-            print("this is prev best tag", prev_best_tag)
             new_tag = backpointers[prev_best_tag][i]
             final_tag_list.append(index_tag_mapping_dict[int(new_tag)])
             prev_best_tag = int(new_tag)
-
-        print(final_tag_list)
 
         result_str = ""
         for i in range(sequence_length):

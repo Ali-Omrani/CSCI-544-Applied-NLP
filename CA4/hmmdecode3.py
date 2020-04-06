@@ -62,6 +62,20 @@ with open(path_to_pickle, 'rb') as f:
                     viterbi[i][0] = 0
 
 
+        for i in range(1, sequence_length):
+            for j in range(diff_tag_count):
+                corresponding_tag = index_tag_mapping_dict[j]
+                max_prob = 0
+                for k in range(diff_tag_count):
+                    prev_tag = index_tag_mapping_dict[k]
+                    #TODO check if each exists!
+                    temp_prob = viterbi[k][i-1] * A[prev_tag][corresponding_tag] * B[corresponding_tag][tokens[i]]
+                    if temp_prob > max_prob:
+                        max_prob = temp_prob
+
+                viterbi[j][i] = max_prob
+
+
 
 
 

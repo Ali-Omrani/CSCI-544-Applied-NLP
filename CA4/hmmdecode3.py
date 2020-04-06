@@ -43,6 +43,7 @@ with open(path_to_pickle, 'rb') as f:
         sequence_length = len(tokens)
         diff_word_count = len(word_list)
         viterbi = np.zeros((diff_tag_count, sequence_length))
+        backpointers = np.zeros((diff_tag_count, sequence_length))
         print(viterbi.shape)
 
         for i in range(diff_tag_count):
@@ -70,13 +71,31 @@ with open(path_to_pickle, 'rb') as f:
                     prev_tag = index_tag_mapping_dict[k]
                     #TODO check if each exists!
                     temp_prob = viterbi[k][i-1] * A[prev_tag][corresponding_tag] * B[corresponding_tag][tokens[i]]
+
                     if temp_prob > max_prob:
                         max_prob = temp_prob
+                        backpointers[j][i] = k
 
                 viterbi[j][i] = max_prob
 
 
+#       find the final top viterbi value
+        final_max = 0
+        best_final_state = 0
+        for i in range(diff_tag_count):
+            if viterbi[i][sequence_length-1] > final_max:
+                final_max = viterbi[i][sequence_length-1]
+                best_final_state = i
 
 
+#       backtrack
+        final_tag_list = []
+        final_tag_list.append(index_tag_mapping_dict[best_final_state])
+        prev_best_tag = best_final_state
+        for i in range (sequence_length-2, -1, -1):
+            new_tag = backpointers[prev_best_tag][i]
+            final_tag_list.append(new_tag)
+            prev_best_tag = new_tag
 
+        print(final_tag_list)
 

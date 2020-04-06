@@ -82,7 +82,7 @@ for tag in B:
         B[tag][word] = (B[tag][word] + 1)/(tag_count_dict[tag]+diff_word_count)
 
 
-result_dict = {"A": A, "B": B, "Pi":Pi}
+result_dict = {"A": A, "B": B, "Pi":Pi, "tag_count_dict":tag_count_dict, "word_list":word_list}
 pickle_out = open("dict.pickle","wb")
 pickle.dump(result_dict, pickle_out)
 pickle_out.close()
